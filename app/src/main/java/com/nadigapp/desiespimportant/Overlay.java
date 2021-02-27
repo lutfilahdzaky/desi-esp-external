@@ -1,100 +1,91 @@
 package com.nadigapp.desiespimportant;
 
-import android.annotation.*;
-import android.app.*;
-import android.content.*;
-import android.graphics.*;
-import android.os.*;
-import android.view.*;
-import java.io.*;
+import android.annotation.SuppressLint;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.os.Build;
+import android.os.IBinder;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.WindowManager;
 
-import java.lang.Process;
-
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class Overlay extends Service {
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
+
     WindowManager windowManager;
-	Process process;
+    Process process;
     View mFloatingView;
     ESPView overlayView;
     @SuppressLint("StaticFieldLeak")
     private static Overlay Instance;
 
-static Context ctx;
+    static Context ctx;
+
     @SuppressLint("InflateParams")
     @Override
     public void onCreate() {
         super.onCreate();
-        ctx=this;
+        ctx = this;
         if (MainActivity.gameType == 1 && MainActivity.is32) {
-            Start(ctx,1,1);
-        }
-        else if (MainActivity.gameType == 1 && MainActivity.is64) {
-            Start(ctx,1,2);
-        }
-        else if (MainActivity.gameType == 2 && MainActivity.is32) {
-            Start(ctx,2,1);
-        }
-        else if (MainActivity.gameType == 2 && MainActivity.is64) {
-            Start(ctx,2,2);
-        }
-        else if (MainActivity.gameType == 3 && MainActivity.is32) {
-            Start(ctx,3,1);
-        }
-        else if (MainActivity.gameType == 3 && MainActivity.is64) {
-            Start(ctx,3,2);
-        }
-        else if (MainActivity.gameType == 4 && MainActivity.is32) {
-            Start(ctx,4,1);
-        }
-        else if (MainActivity.gameType == 4 && MainActivity.is64) {
-            Start(ctx,4,2);
+            Start(ctx, 1, 1);
+        } else if (MainActivity.gameType == 1 && MainActivity.is64) {
+            Start(ctx, 1, 2);
+        } else if (MainActivity.gameType == 2 && MainActivity.is32) {
+            Start(ctx, 2, 1);
+        } else if (MainActivity.gameType == 2 && MainActivity.is64) {
+            Start(ctx, 2, 2);
+        } else if (MainActivity.gameType == 3 && MainActivity.is32) {
+            Start(ctx, 3, 1);
+        } else if (MainActivity.gameType == 3 && MainActivity.is64) {
+            Start(ctx, 3, 2);
+        } else if (MainActivity.gameType == 4 && MainActivity.is32) {
+            Start(ctx, 4, 1);
+        } else if (MainActivity.gameType == 4 && MainActivity.is64) {
+            Start(ctx, 4, 2);
         }
         windowManager = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
         overlayView = new ESPView(ctx);
-      //  mFloatingView = LayoutInflater.from(ctx).inflate(R.layout.float_view, null);
+        //  mFloatingView = LayoutInflater.from(ctx).inflate(R.layout.float_view, null);
         DrawCanvas();
     }
 
     @Override
     public void onDestroy() {
-            super.onDestroy();
-            Close();
-
-        if(overlayView != null)
-        {
-            ((WindowManager)ctx.getSystemService(Context.WINDOW_SERVICE)).removeView(overlayView);
+        super.onDestroy();
+        Close();
+        if (overlayView != null) {
+            ((WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE)).removeView(overlayView);
             overlayView = null;
         }
-		
-		process.destroy();
+        process.destroy();
     }
 
-    public  void Start(final Context context,final int gametype,final int bit) {
-
+    public void Start(final Context context, final int gametype, final int bit) {
         if (Instance == null) {
-           // Intent intent = new Intent(context, Overlay.class);
-
-            Thread t=new Thread(new Runnable() {
-				@Override
-				public void run(){
-                //if())
-					
-					getReady(gametype);
-				
-				}
-
-
-
-
+            // Intent intent = new Intent(context, Overlay.class);
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //if())
+                    getReady(gametype);
+                }
             });
             t.start();
 
-         //   context.startService(intent);
-            Thread t2=new Thread(new Runnable() {
+            //   context.startService(intent);
+            Thread t2 = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -102,35 +93,27 @@ static Context ctx;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    
-					StartDaemon(context,bit);
-
+                    StartDaemon(context, bit);
                 }
             });
             t2.start();
-
-
-//Toast.makeText(context,"Already Started !!",Toast.LENGTH_LONG).show();
-
+            //Toast.makeText(context,"Already Started !!",Toast.LENGTH_LONG).show();
         }
     }
+
     static native boolean getReady(int nameofgame);
 
-   public void StartDaemon(final Context context,int bit){
-	   
-	   
+    public void StartDaemon(final Context context, int bit) {
 	 /*  new Thread()  
 	   {
 		   public void run()
 		   {*/
-			   Shell(MainActivity.socket);
-			   
-
+        Shell(MainActivity.socket);
 		 /*  }
 	   }.start();*/
-	   
-	   //Toast.makeText(context,"Already Started !!",Toast.LENGTH_LONG).show();
-   }
+
+        //Toast.makeText(context,"Already Started !!",Toast.LENGTH_LONG).show();
+    }
 	   
       /*  File del= new File(context.getFilesDir() + "/bitmap.so");
         del.delete();
@@ -162,28 +145,25 @@ static Context ctx;
          Shell.su("chmod +x "+context.getFilesDir()+"/bitmap.so").exec();
         Shell.su(context.getFilesDir()+"/bitmap.so").exec();*/
 
-    
 
     public static void Stop(Context context) {
-
         Intent intent = new Intent(context, Overlay.class);
         context.stopService(intent);
 
         Intent floatLogo = new Intent(context, FloatLogo.class);
         context.stopService(floatLogo);
-		
-		
-
     }
 
     private native void Close();
-   static boolean getConfig(String key){
-        SharedPreferences sp=ctx.getSharedPreferences("espValue",Context.MODE_PRIVATE);
-        return  sp.getBoolean(key,false);
+
+    static boolean getConfig(String key) {
+        SharedPreferences sp = ctx.getSharedPreferences("espValue", Context.MODE_PRIVATE);
+        return sp.getBoolean(key, false);
         // return !key.equals("");
     }
+
     private void DrawCanvas() {
-       // mFloatingView = LayoutInflater.from(this).inflate(R.layout.float_view, null);
+        // mFloatingView = LayoutInflater.from(this).inflate(R.layout.float_view, null);
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -207,7 +187,9 @@ static Context ctx;
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         windowManager.addView(overlayView, params);
     }
+
     public static native void DrawOn(ESPView espView, Canvas canvas);
+
     private int getNavigationBarHeight() {
         boolean hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey();
         int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
@@ -217,28 +199,26 @@ static Context ctx;
         return 0;
     }
 
-	public void Shell(String str) {
-
-		DataOutputStream dataOutputStream = null;
-		try {
-			process = Runtime.getRuntime().exec(str);
+    public void Shell(String str) {
+        DataOutputStream dataOutputStream = null;
+        try {
+            process = Runtime.getRuntime().exec(str);
         } catch (IOException e) {
-			e.printStackTrace();
+            e.printStackTrace();
             process = null;
         }
-		if (process != null) {
+        if (process != null) {
             dataOutputStream = new DataOutputStream(process.getOutputStream());
         }
         try {
             dataOutputStream.flush();
         } catch (IOException e2) {
-			e2.printStackTrace();
-		}
+            e2.printStackTrace();
+        }
         try {
             process.waitFor();
         } catch (InterruptedException e3) {
-			e3.printStackTrace();
-		}
-	}
-
+            e3.printStackTrace();
+        }
+    }
 }

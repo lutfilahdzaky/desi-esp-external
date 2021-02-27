@@ -443,11 +443,11 @@
                                     android:textColor="#5EE863" />
 
                                 <CheckBox
-                                    android:id="@+id/GullieSuit"
+                                    android:id="@+id/GhillieSuit"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:checked="true"
-                                    android:text="Ghillie Suitt"
+                                    android:text="Ghillie Suit"
                                     android:textColor="#5EE863" />
 
                             </TableRow>
@@ -972,7 +972,7 @@
                                     android:id="@+id/Crowbar"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Cowbar"
+                                    android:text="Crowbar"
                                     android:textColor="#5EE863" />
 
                             </TableRow>

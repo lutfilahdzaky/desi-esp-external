@@ -1074,12 +1074,12 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 setValue(String.valueOf(FlareGun.getText()), FlareGun.isChecked());
             }
         });
-        final CheckBox GullieSuit = mFloatingView.findViewById(R.id.GullieSuit);
-        GullieSuit.setChecked(getConfig((String) GullieSuit.getText()));
-        GullieSuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        final CheckBox GhillieSuit = mFloatingView.findViewById(R.id.GhillieSuit);
+        GhillieSuit.setChecked(getConfig((String) GhillieSuit.getText()));
+        GhillieSuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setValue(String.valueOf(GullieSuit.getText()), GullieSuit.isChecked());
+                setValue(String.valueOf(GhillieSuit.getText()), GhillieSuit.isChecked());
             }
         });
         final CheckBox UMP = mFloatingView.findViewById(R.id.UMP);

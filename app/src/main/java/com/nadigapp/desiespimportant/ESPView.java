@@ -154,7 +154,7 @@ public class ESPView extends View implements Runnable {
         mTextPaint.setAlpha(150);
         mTextPaint.setTextSize(size);
         if (realVehicleName != null && !realVehicleName.equals(""))
-            cvs.drawText(realVehicleName + ": " + Math.round(distance) + "米", posX, posY, mTextPaint);
+            cvs.drawText(realVehicleName + " (" + Math.round(distance) + "m)", posX, posY, mTextPaint);
     }
 
     public void DrawCircle(Canvas cvs, int a, int r, int g, int b, float stroke, float posX, float posY, float radius) {
@@ -300,7 +300,7 @@ public class ESPView extends View implements Runnable {
             mTextPaint.setARGB(255, 247, 99, 245);
             return "Mini14";
         }
-        if (s.contains("M24") && getConfig("M24")) {
+        if (s.contains("Sniper_M24") && getConfig("M24")) {
             mTextPaint.setARGB(255, 247, 99, 245);
             return "M24";
         }
@@ -326,7 +326,7 @@ public class ESPView extends View implements Runnable {
             mTextPaint.setARGB(255, 153, 109, 109);
             return "S12K";
         }
-        if (s.contains("DBS") && getConfig("DBS")) {
+        if (s.contains("ShotGun_DP12") && getConfig("DBS")) {
             mTextPaint.setARGB(255, 153, 109, 109);
             return "DBS";
         }
@@ -346,9 +346,9 @@ public class ESPView extends View implements Runnable {
             mTextPaint.setARGB(255, 102, 74, 74);
             return "Machete";
         }
-        if (s.contains("Cowbar") && getConfig("Cowbar")) {
+        if (s.contains("Cowbar") && getConfig("Crowbar")) {
             mTextPaint.setARGB(255, 102, 74, 74);
-            return "Cowbar";
+            return "Crowbar";
         }
         if (s.contains("CrossBow") && getConfig("CrossBow")) {
             mTextPaint.setARGB(255, 102, 74, 74);
@@ -546,7 +546,7 @@ public class ESPView extends View implements Runnable {
             mTextPaint.setARGB(255, 155, 189, 222);
             return "Stock Micro UZI";
         }
-        if (s.contains("QK_Sniper") && getConfig("SniperCompensator")) {
+        if (s.contains("QK_Sniper_C") && getConfig("SniperCompensator")) {
             mTextPaint.setARGB(255, 60, 127, 194);
             return "Sniper Compensator";
         }
@@ -640,7 +640,7 @@ public class ESPView extends View implements Runnable {
             mTextPaint.setARGB(255, 139, 247, 67);
             return "Ghillie Suit";
         }
-        if (s.contains("CheekPad") && getConfig("CheekPad")) {
+        if (s.contains("QT_Sniper") && getConfig("CheekPad")) {
             mTextPaint.setARGB(255, 112, 55, 55);
             return "CheekPad";
         }
